@@ -1,0 +1,26 @@
+{
+  "name": "library-sparql",
+  "version": "1.0.0",
+  "description": "A NodeJS backend combined with SPARQL for a web library application",
+  "main": "main.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.0",
+    "sparql-client-2": "^0.6.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IbnuAhsani/library-sparql.git"
+  },
+  "author": "Ibnu Ahsani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IbnuAhsani/library-sparql/issues"
+  },
+  "homepage": "https://github.com/IbnuAhsani/library-sparql#readme"
+}
