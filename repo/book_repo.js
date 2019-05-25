@@ -6,6 +6,8 @@ const headers = {
   'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
 }
 
+const BASE_URL='http://fuseki:3030'
+
 exports.GetBooks = async () => {
   const queryData = {
     query: `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -21,8 +23,7 @@ exports.GetBooks = async () => {
   };
 
   try{
-    const url = 'http://localhost:3030/perpustakaan/query';
-    const { data } = await axios(url, {
+    const { data } = await axios(`${BASE_URL}/perpustakaan/query`, {
       method: 'POST',
       headers,
       data: qs.stringify(queryData)
