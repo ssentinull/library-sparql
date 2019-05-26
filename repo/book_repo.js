@@ -1,14 +1,14 @@
 const axios = require('axios');
 const qs = require('qs');
 
+const BASE_URL='http://fuseki:3030';
+
 const headers = {
   'Accept': 'application/sparql-results+json,*/*;q=0.9',
   'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
 }
 
-const BASE_URL='http://fuseki:3030'
-
-exports.GetBooks = async () => {
+exports.getBooks = async name => {
   const queryData = {
     query: 
     `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -18,7 +18,7 @@ exports.GetBooks = async () => {
     WHERE {
       ?books rdf:type t:Book;
               t:name ?name.
-      filter regex(?name, "^mathematics").
+      filter regex(?name, "^${name}").
     }`
   };
 
