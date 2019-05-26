@@ -10,16 +10,16 @@ const BASE_URL='http://fuseki:3030'
 
 exports.GetBooks = async () => {
   const queryData = {
-    query: `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    query: 
+    `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX t: <http://www.semanticweb.org/boi/ontologies/2019/4/untitled-ontology-3#>
     
-    SELECT ?books ?nama
+    SELECT ?books
     WHERE {
-      ?books t:publishedBy t:Pub_PrenticeHall.
-      ?books t:name ?nama.
-    }
-  `
+      ?books rdf:type t:Book;
+              t:name ?name.
+      filter regex(?name, "^mathematics").
+    }`
   };
 
   try{
