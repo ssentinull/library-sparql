@@ -6,13 +6,13 @@ exports.search = wrap(async (req, res) => {
 
   const books = await bookRepo.getBooks(name);
 
-  const formattedBooks = {
+  const results = {
     "books": [],
     "suggestions": [],
   };
 
   books.results.bindings.forEach(book => {
-    var formattedBook = {
+    var book = {
       "name": book.name.value,
       "category": book.category.value,
       "author": book.author.value,
@@ -20,10 +20,40 @@ exports.search = wrap(async (req, res) => {
       "library": book.library.value
     }
 
-    formattedBooks.books.push(formattedBook);
+    results.books.push(book);
   });
+
+  const unfilteredCategories = [];
+
+  results.books.forEach(book => {
+    unfilteredCategories.push(book.category);
+  });
+
+  const filterredCategories = unfilteredCategories.filter((item, position) => {
+    return unfilteredCategories.indexOf(item) == position;
+  });
+
+  const suggestions = await bookRepo.getSuggestions(filterredCategories);
   
-  return res.status(200).json(formattedBooks);
+  suggestions.forEach(suggestion => {
+    console.log('suggestion')
+    console.log(suggestion)
+    
+    const booksByCategory = suggestion.results.bindings;
+
+    booksByCategory.forEach(bookByCategory => {
+      const book = {
+        "name": bookByCategory.name.value,
+        "category": bookByCategory.category.value,
+        "author": bookByCategory.author.value,
+        "publisher": bookByCategory.publisher.value,
+        "library": bookByCategory.library.value
+      }
+      results.suggestions.push(book);
+    });
+  });
+
+  return res.status(200).json(results);
 });
 
 module.exports = exports
