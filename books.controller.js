@@ -1,3 +1,4 @@
+const bookFormatter = require('./util/book_formatter');
 const bookRepo = require('./repo/book_repo');
 const wrap = require('./util/async_wrap');
 
@@ -14,13 +15,7 @@ exports.search = wrap(async (req, res) => {
   ];
 
   books.results.bindings.forEach(book => {
-    const formattedBook = {
-      "name": book.name.value,
-      "category": book.category.value,
-      "author": book.author.value,
-      "publisher": book.publisher.value,
-      "library": book.library.value
-    }
+    const formattedBook = bookFormatter(book);
 
     results.books.push(formattedBook);
   });
@@ -39,13 +34,7 @@ exports.search = wrap(async (req, res) => {
     const suggestedBooks = suggestion.results.bindings;
 
     suggestedBooks.forEach(suggestedBook => {
-      const formattedBook = {
-        "name": suggestedBook.name.value,
-        "category": suggestedBook.category.value,
-        "author": suggestedBook.author.value,
-        "publisher": suggestedBook.publisher.value,
-        "library": suggestedBook.library.value
-      }
+      const formattedBook = bookFormatter(suggestedBook);
       
       results.suggestions.push(formattedBook);
     });
