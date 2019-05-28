@@ -4,15 +4,17 @@ const wrap = require('./util/async_wrap');
 exports.search = wrap(async (req, res) => {
   const { name } = req.body;
 
-  const books = await bookRepo.getBooks(name);
-
-  const results = {
-    "books": [],
-    "suggestions": [],
-  };
+  const [books, results, unfilteredCategories] = [
+    await bookRepo.getBooks(name), 
+    {
+      "books": [],
+      "suggestions": [],
+    },
+    []
+  ];
 
   books.results.bindings.forEach(book => {
-    var book = {
+    const formattedBook = {
       "name": book.name.value,
       "category": book.category.value,
       "author": book.author.value,
@@ -20,10 +22,8 @@ exports.search = wrap(async (req, res) => {
       "library": book.library.value
     }
 
-    results.books.push(book);
+    results.books.push(formattedBook);
   });
-
-  const unfilteredCategories = [];
 
   results.books.forEach(book => {
     unfilteredCategories.push(book.category);
@@ -36,20 +36,18 @@ exports.search = wrap(async (req, res) => {
   const suggestions = await bookRepo.getSuggestions(filterredCategories);
   
   suggestions.forEach(suggestion => {
-    console.log('suggestion')
-    console.log(suggestion)
-    
-    const booksByCategory = suggestion.results.bindings;
+    const suggestedBooks = suggestion.results.bindings;
 
-    booksByCategory.forEach(bookByCategory => {
-      const book = {
-        "name": bookByCategory.name.value,
-        "category": bookByCategory.category.value,
-        "author": bookByCategory.author.value,
-        "publisher": bookByCategory.publisher.value,
-        "library": bookByCategory.library.value
+    suggestedBooks.forEach(suggestedBook => {
+      const formattedBook = {
+        "name": suggestedBook.name.value,
+        "category": suggestedBook.category.value,
+        "author": suggestedBook.author.value,
+        "publisher": suggestedBook.publisher.value,
+        "library": suggestedBook.library.value
       }
-      results.suggestions.push(book);
+      
+      results.suggestions.push(formattedBook);
     });
   });
 
