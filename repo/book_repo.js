@@ -17,11 +17,8 @@ exports.getBooks = async name => {
     SELECT ?name ?category ?author ?publisher ?library
     WHERE {
       ?books rdf:type t:Book;
-        t:name ?name.
-
-      filter regex(?name, "^${name}").
-      
-      ?books t:kindOf ?categoryInstance;
+        t:name ?name;
+        t:kindOf ?categoryInstance;
         t:writtenBy ?authorInstance;
         t:publishedBy ?publisherInstance;
         t:archivedIn ?libraryInstance.
@@ -30,6 +27,8 @@ exports.getBooks = async name => {
       ?authorInstance t:name ?author.
       ?publisherInstance t:name ?publisher.
       ?libraryInstance t:name ?library.
+
+      filter regex(?name, "^${name}").
     }`
   };
 
@@ -52,7 +51,7 @@ exports.getSuggestions = async categories => {
   try{
     const suggestions = [];
 
-    for(const category of categories){
+    for (const category of categories){
 
       const queryData = {
         query: 
