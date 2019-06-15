@@ -28,7 +28,7 @@ exports.getBooks = async name => {
       ?publisherInstance t:name ?publisher.
       ?libraryInstance t:name ?library.
 
-      filter regex(?name, "^${name}").
+      filter regex(?name, "${name}").
     }`
   };
 
@@ -72,7 +72,7 @@ exports.getSuggestions = async categories => {
           ?publisherInstance t:name ?publisher.
           ?libraryInstance t:name ?library.
     
-          filter regex(?category, "^${category}").
+          filter regex(?category, "${category}").
         }
         LIMIT 3`
       };
