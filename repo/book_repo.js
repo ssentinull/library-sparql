@@ -72,7 +72,11 @@ exports.getSuggestions = async categories => {
         data: qs.stringify(queryData)
       });
       
-      data.results.bindings.forEach(category => categories.push(category.categories.value));
+      data.results.bindings.forEach(category => {
+        const newCategory = category.categories.value;
+        
+        categories.push(newCategory);
+      });
     }
 
     const suggestions = [];
