@@ -3,26 +3,28 @@ const bookRepo = require('./repo/book_repo');
 const wrap = require('./util/async_wrap');
 
 exports.search = wrap(async (req, res) => {
-  const { name } = req.body;
-
-  const [books, results, unfilteredCategories] = [
-    await bookRepo.getBooks(name), 
+  const [{ name }, results, unfilteredCategories] = [
+    req.body,
     {
       "books": [],
       "suggestions": [],
     },
     []
   ];
+  
+  if(name){
+    const books = await bookRepo.getBooks(name); 
 
-  books.results.bindings.forEach(book => {
-    const formattedBook = bookFormatter(book);
-
-    results.books.push(formattedBook);
-  });
-
-  results.books.forEach(book => {
-    unfilteredCategories.push(book.category);
-  });
+    books.results.bindings.forEach(book => {
+      const formattedBook = bookFormatter(book);
+  
+      results.books.push(formattedBook);
+    });
+  
+    results.books.forEach(book => {
+      unfilteredCategories.push(book.category);
+    });
+  }
 
   const filterredCategories = unfilteredCategories.filter((item, position) => {
     return unfilteredCategories.indexOf(item) == position;
