@@ -3,12 +3,16 @@ const qs = require('qs');
 
 const BASE_URL='http://fuseki:3030';
 
+// headers for the HTTP request
 const headers = {
   'Accept': 'application/sparql-results+json,*/*;q=0.9',
   'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
 }
 
+// function to get the books based on the 'name' input
 exports.getBooks = async name => {
+
+  // SPARQL query to search for the books
   const queryData = {
     query: 
     `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -47,11 +51,14 @@ exports.getBooks = async name => {
   }
 }
 
+// function to get the suggested books based on the selected categories
 exports.getSuggestions = async categories => {
   try{
 
+    // if the categories array is an empty array
     if (categories == undefined || categories.length == 0) {
 
+      // SPARQL query to get 5 random categories
       const queryData = {
         query: 
         `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -83,6 +90,7 @@ exports.getSuggestions = async categories => {
 
     for (const category of categories){
 
+      // SPARQL query to get the books based on categories
       const queryData = {
         query: 
         `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

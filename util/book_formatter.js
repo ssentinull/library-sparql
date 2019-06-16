@@ -1,3 +1,5 @@
+// place the key value pair in an object
+// and return that object
 module.exports = fn = data => {
   return {
     "name": data.name.value,
