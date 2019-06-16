@@ -49,6 +49,32 @@ exports.getBooks = async name => {
 
 exports.getSuggestions = async categories => {
   try{
+
+    if (categories == undefined || categories.length == 0) {
+
+      const queryData = {
+        query: 
+        `PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX t: <http://www.semanticweb.org/boi/ontologies/2019/4/perpustakaan#>
+        
+        SELECT ?categories
+        WHERE {
+          ?categoryInstances rdf:type t:Category;
+            t:name ?categories;
+		    }
+        ORDER BY RAND()
+        LIMIT 5`
+      };
+      
+      const { data } = await axios(`${BASE_URL}/perpustakaan/query`, {
+        method: 'POST',
+        headers,
+        data: qs.stringify(queryData)
+      });
+      
+      data.results.bindings.forEach(category => categories.push(category.categories.value));
+    }
+
     const suggestions = [];
 
     for (const category of categories){
