@@ -9,7 +9,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.0",
     "nodemon": "^1.19.0",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "sparql-client-2": "^0.6.3"
   },
   "devDependencies": {},
